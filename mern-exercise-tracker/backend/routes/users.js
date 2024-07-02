@@ -1,24 +1,3 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
-
-const userSchema = new Schema({
-    username: {
-        type: String,
-        required: true,
-        unique: true,
-        trim: true,
-        minlength: 1
-    },
-    password: {
-        type: String,
-        required: true,
-        trim: true,
-        minlength: 1
-    }
-}, {
-    timestamps: true
-});
-
 const User = mongoose.model('User', userSchema);
 const router = require('express').Router();
 let User = require('../models/user.model');

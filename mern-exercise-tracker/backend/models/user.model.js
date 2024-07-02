@@ -7,11 +7,17 @@ const userSchema = new Schema({
         required: true,
         unique: true,
         trim: true,
-        minlength: 3
+        minlength: 1
+    },
+    password: {
+        type: String,
+        required: true,
+        trim: true,
+        minlength: 1
     }
 }, {
     timestamps: true
-}); 
+});
 
 const User = mongoose.model('User', userSchema);
 

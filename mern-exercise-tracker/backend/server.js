@@ -13,7 +13,7 @@ app.use(cors());
 app.use(express.json());
 
 // Connessione a MongoDB
-mongoose.connect("mongodb://localhost:27017/Prova", {
+mongoose.connect(process.env.MONGO_URI || "mongodb://localhost:27017/Prova", {
     useNewUrlParser: true,
     useUnifiedTopology: true
 }).then(() => {

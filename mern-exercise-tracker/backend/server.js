@@ -13,9 +13,7 @@ app.use(cors());
 app.use(express.json());
 
 // Connessione a MongoDB
-mongoose.connect(process.env.MONGO_URI || "mongodb://localhost:27017/Prova", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
+mongoose.connect(process.env.MONGO_URI || "mongodb://localhost:27017/Prova/User", {
 }).then(() => {
     console.log('Connected to MongoDB');
 }).catch((error) => {
@@ -24,13 +22,11 @@ mongoose.connect(process.env.MONGO_URI || "mongodb://localhost:27017/Prova", {
 
 // Route di esempio
 app.get('/', (req, res) => {
-    res.send('NABROOO?? World');
+    res.send('SERVER ATTIVO');
 });
 
-const exercisesRouter = require('./routes/exercises');
 const usersRouter = require('./routes/users');
 
-app.use('/exercises', exercisesRouter);
 app.use('/users', usersRouter);
 
 // Avvio del server

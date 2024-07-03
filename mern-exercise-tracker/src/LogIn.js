@@ -59,8 +59,9 @@ const LogIn = () => {
 
   return (
     <div className="login-container">
+      <h1 className='titolo'>Benvenuto in AGAFabula</h1>
       <form onSubmit={handleSubmit} className="login-form">
-        <h2>Login</h2>
+        <h2>Accesso</h2>
         <div className="form-group">
           <label htmlFor="username">Username:</label>
           <input

@@ -1,10 +1,12 @@
 // src/Login.js
 import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import './LogIn.css';
 
 const LogIn = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -20,7 +22,8 @@ const LogIn = () => {
         if (data) {
           // Placeholder per la logica di autenticazione effettiva
           console.log('Utente trovato:', data);
-          alert('Login avvenuto con successo!');
+          //alert('Login avvenuto con successo!');
+          navigate('/home');
         } else {
           alert('Utente non trovato, per favore registrati.');
         }

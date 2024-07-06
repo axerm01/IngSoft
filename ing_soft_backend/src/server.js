@@ -2,18 +2,17 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
-
 dotenv.config();
 
 const app = express();
-const port = 5000;
+const port = process.env.PORT;
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 
 // Connessione a MongoDB
-mongoose.connect("mongodb://localhost:27017", {
+mongoose.connect(process.env.DATABASE_URL, {
 }).then(() => {
     console.log('Connected to MongoDB');
 }).catch((error) => {

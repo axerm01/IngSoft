@@ -7,7 +7,7 @@ const sceneSchema = new Schema({
     sceneType: { 
         type: String, 
         required: true,
-        enum: ['scelta', 'oggetto', 'indovinello', 'finale']
+        enum: ['scelta', 'indovinello', 'finale']
     }
 });
 

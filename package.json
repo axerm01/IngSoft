@@ -1,7 +1,8 @@
 {
   "dependencies": {
     "mongoose": "^8.4.4",
-    "react-router-dom": "^6.24.1"
+    "react-router-dom": "^6.24.1",
+    "web-vitals": "^4.2.1"
   },
   "name": "ingsoft",
   "version": "1.0.0",

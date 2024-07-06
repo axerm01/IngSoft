@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const User = require('../models/user.model'); // Assicurati che il modello User sia correttamente importato
+const User = require('./models/user.model'); // Assicurati che il modello User sia correttamente importato
 
 // Aggiungi un nuovo utente
 router.route('/add').post(async (req, res) => {

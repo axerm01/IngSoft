@@ -1,28 +1,37 @@
 const express = require('express');
-const cors = require('cors');
 const mongoose = require('mongoose');
-require('dotenv').config();
+const cors = require('cors');
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = 5000;
 
+// Middleware
 app.use(cors());
 app.use(express.json());
 
-const uri = process.env.DATABASE_URL;
-mongoose.connect(uri);
-const connection = mongoose.connection;
-connection.once('open', () => {
-    console.log(`MongoDB connection established`);
+// Connessione a MongoDB
+mongoose.connect("mongodb://localhost:27017", {
+}).then(() => {
+    console.log('Connected to MongoDB');
+}).catch((error) => {
+    console.error('MongoDB connection error:', error);
 });
 
-/*const exercisesRouter = require('./routes/exercises');
-app.use('/exercises', exercisesRouter);
+// Route di esempio
+app.get('/', (req, res) => {
+    res.send('SERVER ATTIVO');
+});
 
-const usersRouter = require('./routes/users');
+const usersRouter = require('./routes/users.route.js');
+const scenesRouter = require('./routes/scenes.route.js'); // Percorso relativo corretto
+
 app.use('/users', usersRouter);
-*/
+app.use('/scenes', scenesRouter); // Aggiungi questa linea per le rotte delle scene
 
+// Avvio del server
 app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
+    console.log(`Server running at http://localhost:${port}/`);
 });

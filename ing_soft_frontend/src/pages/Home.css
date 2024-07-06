@@ -1,6 +1,6 @@
 /* src/Home.css */
 body {
-    background: url('/mauroscimmia.jpg');
+    background: url('/workspaces/IngSoft/ing_soft_frontend/public/images/mauroscimmia.jpg');
     margin: 0;
     font-family: Arial, sans-serif;
   }
@@ -9,7 +9,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     height: 100vh;
     background: rgba(0, 0, 0, 0.6); /* Leggera sovrapposizione per rendere il testo leggibile */
   }
@@ -41,6 +41,7 @@ body {
     background-color: #dc3545;
     color: white;
     cursor: pointer;
+    margin-right: 10px;
   }
   
   .logout-button:hover {
@@ -54,13 +55,15 @@ body {
   
   .button-container {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    height: calc(100vh - 100px);
+    justify-content: space-around;
+    width: 100%;
+    padding: 20px 0;
+    margin-top: 30px;
   }
   
   .home-button {
+    flex: 1; /* Permette ai pulsanti di occupare tutto lo spazio disponibile */
     padding: 15px 30px;
     margin: 10px;
     border: none;
@@ -69,6 +72,7 @@ body {
     color: white;
     cursor: pointer;
     font-size: 18px;
+    text-align: center; /* Centra il testo nel pulsante */
   }
   
   .home-button:hover {

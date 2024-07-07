@@ -21,7 +21,7 @@ mongoose.connect(process.env.DATABASE_URL, {
 
 // Route di esempio
 app.get('/', (req, res) => {
-    res.send('SERVER ATTIVO');
+    res.send('SERVER attivo');
 });
 
 const usersRouter = require('./routes/users.route.js');

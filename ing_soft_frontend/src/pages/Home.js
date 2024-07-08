@@ -18,7 +18,7 @@ const Home = () => {
           <button className="logout-button" onClick={handleLogout} >Logout</button>
         </header>
         <div className="button-container">
-          <Link to="/Scene" className="home-button">Le tue scene</Link>
+          <Link to="/SceneList" className="home-button">Le tue scene</Link>
           <Link to="/stories" className="home-button">Crea storia</Link>
         </div>
       </div>

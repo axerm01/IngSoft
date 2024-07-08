@@ -45,6 +45,26 @@ router.route('/:title').get(async (req, res) => {
         res.status(400).json('Error: ' + error);
     }
 });
+// Aggiorna la descrizione di una scena dato il suo titolo
+router.route('/update/:title').put(async (req, res) => {
+    const { title } = req.params;
+    const { description } = req.body;
+
+    try {
+        const scene = await Scene.findOne({ title });
+        if (!scene) {
+            return res.status(404).json('Scene not found');
+        }
+
+        scene.description = description;
+        await scene.save();
+
+        res.json('Scene description updated');
+    } catch (error) {
+        res.status(400).json('Error: ' + error);
+    }
+});
+
 
 // Elimina tutte le scene
 router.route('/delete/all').delete(async (req, res) => {

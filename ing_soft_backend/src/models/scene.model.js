@@ -2,10 +2,11 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const sceneSchema = new Schema({
+    storyId: { type: String, required: true },
     title: { type: String, required: true },
     description: { type: String, required: true },
-    sceneType: { 
-        type: String, 
+    sceneType: {
+        type: String,
         required: true,
         enum: ['scelta', 'indovinello', 'finale']
     }

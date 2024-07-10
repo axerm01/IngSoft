@@ -3,7 +3,7 @@ const Scene = require('../models/scene.model'); // Assicurati che il modello Use
 
 // Aggiungi una nuova scena
 router.route('/add').post(async (req, res) => {
-    const { title, description, sceneType } = req.body;
+    const { storyId, title, description, sceneType } = req.body;
 
     try {
         // Controlla se la scena esiste già
@@ -13,7 +13,7 @@ router.route('/add').post(async (req, res) => {
         }
 
         // Crea una nuova scena
-        const newScene = new Scene({ title, description, sceneType });
+        const newScene = new Scene({ storyId, title, description, sceneType });
         await newScene.save();
         res.json('Scene added!');
     } catch (error) {
@@ -26,6 +26,18 @@ router.route('/').get(async (req, res) => {
     try {
         const scenes = await Scene.find();
         res.json(scenes);
+    } catch (error) {
+        res.status(400).json('Error: ' + error);
+    }
+});
+
+// Ottieni tutte le scene di una storia
+router.route('/:storyId').get(async (req, res) => {
+    const { storyId } = req.params;
+
+    try {
+        const scene = await Scene.find({ storyId });
+        res.json(scene);
     } catch (error) {
         res.status(400).json('Error: ' + error);
     }
@@ -45,6 +57,27 @@ router.route('/:title').get(async (req, res) => {
         res.status(400).json('Error: ' + error);
     }
 });
+
+// Aggiorna la descrizione di una scena dato il suo titolo
+router.route('/update/:title').put(async (req, res) => {
+    const { title } = req.params;
+    const { description } = req.body;
+
+    try {
+        const scene = await Scene.findOne({ title });
+        if (!scene) {
+            return res.status(404).json('Scene not found');
+        }
+
+        scene.description = description;
+        await scene.save();
+
+        res.json('Scene description updated');
+    } catch (error) {
+        res.status(400).json('Error: ' + error);
+    }
+});
+
 
 // Elimina tutte le scene
 router.route('/delete/all').delete(async (req, res) => {

@@ -5,7 +5,7 @@
     align-items: center;
     height: 100vh;
     flex-direction: column;
-    background: url('/workspaces/IngSoft/ing_soft_frontend/public/images/mauroscimmia.jpg');
+    background: url('../../public/images/mauroscimmia.jpg');
   }
   body {
     background-color: purple;

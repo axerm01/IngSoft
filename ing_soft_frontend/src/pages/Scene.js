@@ -1,6 +1,6 @@
 // src/Scene.js
 import React, { useState } from 'react';
-import './Scene.css';
+import '../style/Scene.css';
 
 const Scene = () => {
   const [title, setTitle] = useState('');
@@ -23,7 +23,7 @@ const Scene = () => {
     e.preventDefault();
 
     // Invia la richiesta POST all'API per creare una nuova scena
-    fetch('http://localhost:5000/scenes/add', {
+    fetch(apiUrl+'/scenes/add', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -1,13 +1,13 @@
 // src/Scene.js
 import React, { useState } from 'react';
-import './Scene.css';
+import '../style/Scene.css';
 
 const Scene = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [sceneType, setSceneType] = useState('scelta');
 
-  const handleTitleChange = (e) => {
+  const handleTitleChange = (e) =>   {
     setTitle(e.target.value);
   };
 
@@ -22,22 +22,17 @@ const Scene = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const sceneData = {
-      title: title,
-      description: description,
-      sceneType: sceneType,
-    };
-
-    // Log del JSON prima dell'invio
-    console.log('Invio del JSON:', JSON.stringify(sceneData));
-
     // Invia la richiesta POST all'API per creare una nuova scena
-    fetch('http://localhost:5000/scenes/add', {
+    fetch(apiUrl+'/scenes/add', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(sceneData),
+      body: JSON.stringify({
+        title: title,
+        description: description,
+        sceneType: sceneType,
+      }),
     })
       .then(response => {
         if (!response.ok) {
@@ -62,7 +57,7 @@ const Scene = () => {
   return (
     <div className="scene-container">
       <h1>Crea una nuova scena</h1>
-      <form className="scene-form" onSubmit={handleSubmit}>
+      <form className="scene-form">
         <div className="form-group">
           <label htmlFor="title">Titolo:</label>
           <input
@@ -86,6 +81,7 @@ const Scene = () => {
           <label htmlFor="type">Tipo di scena:</label>
           <select id="type" value={sceneType} onChange={handlesceneTypeChange}>
             <option value="scelta">Scelta</option>
+            <option value="oggetto">Oggetto</option>
             <option value="indovinello">Indovinello</option>
             <option value="finale">Finale</option>
           </select>

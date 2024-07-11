@@ -1,21 +1,28 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import LogIn from './pages/LogIn'; // Assicura che il percorso sia corretto
 import Home from './pages/Home'; // Assicura che il percorso sia corretto
-import Scene from './pages/Scene'; 
-import SceneList from './pages/SceneList';
-import EditScene from './pages/EditScene';
+import Scene from './pages/Scene';
+import StoriesPage from './pages/StoriesPage';
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
+import { AuthProvider, useAuth } from './context/AuthContext';
+
+/*const PrivateRoute = ({ children }) => {
+  const { auth } = useAuth();
+  return auth.isAuthenticated ? children : <Navigate to="/login" />;
+};*/
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/LogIn" element={<LogIn />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/stories" element={<StoriesPage /> } />
         <Route path="/Home" element={<Home />} />
         <Route path="/Scene" element={<Scene />} />
-        <Route path="/SceneList" element={<SceneList />} />
-        <Route path="/EditScene/:slug" element={<EditScene />} />
-        <Route path="/" element={<LogIn />} />
+        <Route path="/" element={<LoginPage />} />
+        <Route path="/createStory" element={<div>Create Story Page</div>} />
       </Routes>
     </Router>
   );

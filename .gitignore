@@ -1,0 +1,7 @@
+# Ignora tutte le cartelle node_modules nel progetto
+node_modules/
+**/node_modules/
+
+# Ignora i file package-lock.json e package.json ovunque nel progetto
+package-lock.json
+package.json

@@ -1,7 +1,7 @@
 // src/Home.js
 import React, { useState } from 'react';
 import { Link,useNavigate } from 'react-router-dom';
-import './Home.css';
+import '../style/Home.css';
 
 
 const Home = () => {
@@ -18,8 +18,8 @@ const Home = () => {
           <button className="logout-button" onClick={handleLogout} >Logout</button>
         </header>
         <div className="button-container">
-          <Link to="/SceneList" className="home-button">Le tue scene</Link>
-          <Link to="/stories" className="home-button">Crea storia</Link>
+          <Link to="/play" className="home-button">Gioca</Link>
+          <Link to="/stories" className="home-button">Configurazione</Link>
         </div>
       </div>
     );

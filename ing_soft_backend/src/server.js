@@ -3,6 +3,7 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -34,7 +35,8 @@ app.post('/register', async (req, res) => {
     const { username, password } = req.body;
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
-        const newUser = new User({ username, password: hashedPassword });
+        const userId = crypto.createHash('sha256').update(username).digest('hex');
+        const newUser = new User({ userId, username, password: hashedPassword });
         await newUser.save();
         res.status(201).json({ message: 'User created successfully' });
     } catch (error) {
@@ -61,12 +63,12 @@ app.post('/login', async (req, res) => {
 
         //const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-        console.log("id: "+user._id);
         // Imposta un cookie con l'ID dell'utente
-        res.cookie('userId', user._id, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production', // Imposta true in produzione
-            sameSite: 'Lax'
+        res.cookie('userId', user.userId, {
+            httpOnly: false,
+            secure: false, // Imposta true in produzione
+            sameSite: 'Lax',
+            path: '/'
         });
 
         console.log('Login successful');

@@ -1,10 +1,11 @@
+// src/pages/LoginPage.js
 import React from 'react';
 import Login from '../auth/Login';
 
-const LoginPage = ({ onLogin }) => {
+const LoginPage = () => {
     return (
         <div>
-            <Login onLogin={onLogin} />
+            <Login />
         </div>
     );
 };

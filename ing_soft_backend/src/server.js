@@ -98,11 +98,12 @@ app.post('/login', async (req, res) => {
 app.get('/', /*authenticateToken,*/ (req, res) => {
     res.json({ message: 'Server attivo', user: req.user });
 });
-
+const itemsRouter = require('./routes/items.route.js');
 const usersRouter = require('./routes/users.route.js');
 const scenesRouter = require('./routes/scenes.route.js'); // Percorso relativo corretto
 const storiesRouter = require('./routes/stories.route.js');
 
+app.use('/items', itemsRouter);
 app.use('/users', usersRouter);
 app.use('/scenes', scenesRouter); // Aggiungi questa linea per le rotte delle scene
 app.use('/stories', storiesRouter);

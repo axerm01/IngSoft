@@ -8,6 +8,8 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import CreateStoryPage from './pages/CreateStory'; // Importa la nuova pagina
+import Items from './pages/Item';
+
 
 const PrivateRoute = ({ children }) => {
   const { auth } = useAuth();
@@ -26,6 +28,7 @@ function App() {
           <Route path="/scene" element={<PrivateRoute><Scene /></PrivateRoute>} />
           <Route path="/" element={<Navigate to="/login" />} />
           <Route path="/createStory" element={<CreateStoryPage />} /> {/* Aggiungi la nuova rotta */}
+          <Route path="/item" element={<PrivateRoute><Items /></PrivateRoute>} />
           </Routes>
       </Router>
     </AuthProvider>

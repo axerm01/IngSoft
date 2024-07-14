@@ -9,13 +9,14 @@ router.route('/add').post(async (req, res) => {
         // Controlla se l'item esiste già
         const existingItem = await Item.findOne({userId, name });
         if (existingItem) {
-            return res.status(400).json('Item already exists');
-        }
+            return res.status(400).json('Oggetto esistente');
+        } else {
 
         // Crea un nuovo item
         const newItem = new Item({ userId, name });
         await newItem.save();
-        res.json('Item added!');
+        res.json('Item aggiunto!');
+    }
     } catch (error) {
         res.status(400).json('Error: ' + error);
     }

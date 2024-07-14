@@ -1,13 +1,19 @@
 const router = require('express').Router();
-const Story = require('../models/story.model'); // Assicurati che il modello User sia correttamente importato
+const Story = require('../models/story.model'); // Assicurati che il modello Story sia correttamente importato
 
 // Aggiungi una nuova storia
 router.route('/add').post(async (req, res) => {
-    const { storyId, title, authorId, creationDate } = req.body;
+    const { title, initialSceneTitle, authorId } = req.body;
 
     try {
+        // Verifica se esiste già una storia con lo stesso titolo
+        const existingStory = await Story.findOne({ title });
+        if (existingStory) {
+            return res.status(400).json('Story with this title already exists');
+        }
+
         // Crea una nuova storia
-        const newStory = new Story({storyId, title, authorId, creationDate});
+        const newStory = new Story({ title, initialSceneTitle, authorId });
         await newStory.save();
         res.json('Story added!');
     } catch (error) {
@@ -27,10 +33,10 @@ router.route('/').get(async (req, res) => {
 
 // Ottieni una storia dato il suo id
 router.route('/:id').get(async (req, res) => {
-    const { storyId } = req.params;
+    const { id } = req.params;
 
     try {
-        const story = await Story.findOne({ storyId });
+        const story = await Story.findById(id);
         if (!story) {
             return res.status(404).json('Story not found');
         }
@@ -39,32 +45,28 @@ router.route('/:id').get(async (req, res) => {
         res.status(400).json('Error: ' + error);
     }
 });
-// Aggiorna la descrizione di una scena dato il suo titolo
-/*router.route('/update/:title').put(async (req, res) => {
-    const { title } = req.params;
-    const { description } = req.body;
+
+// Controlla se esiste già una storia dato il titolo e l'id dell'autore
+router.route('/exists/:authorId/:title').get(async (req, res) => {
+    const { authorId, title } = req.params;
 
     try {
-        const scene = await Scene.findOne({ title });
-        if (!scene) {
-            return res.status(404).json('Scene not found');
+        const existingStory = await Story.findOne({ authorId, title });
+        if (existingStory) {
+            res.json({ exists: true });
+        } else {
+            res.json({ exists: false });
         }
-
-        scene.description = description;
-        await scene.save();
-
-        res.json('Scene description updated');
     } catch (error) {
         res.status(400).json('Error: ' + error);
     }
-});*/
-
+});
 
 // Elimina tutte le storie
 router.route('/delete/all').delete(async (req, res) => {
     try {
         await Story.deleteMany();
-        res.json('All scenes deleted');
+        res.json('All stories deleted');
     } catch (error) {
         res.status(400).json('Error: ' + error);
     }
@@ -72,11 +74,11 @@ router.route('/delete/all').delete(async (req, res) => {
 
 // Elimina una storia dato l'id
 router.route('/delete/:id').delete(async (req, res) => {
-    const { storyId } = req.params;
+    const { id } = req.params;
 
     try {
-        const deletedStory = await Story.findOneAndDelete({ storyId });
-        if (!Story) {
+        const deletedStory = await Story.findByIdAndDelete(id);
+        if (!deletedStory) {
             return res.status(404).json('Story not found');
         }
         res.json('Story deleted');

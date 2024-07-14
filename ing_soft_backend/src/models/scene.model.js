@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const sceneSchema = new Schema({
-    sceneId: { type: String, required: true },
+    //sceneId: { type: Schema.Types.ObjectId, default: mongoose.Types.ObjectId },
     storyId: { type: String, required: true },
     title: { type: String, required: true },
     description: { type: String, required: true },
@@ -11,8 +11,8 @@ const sceneSchema = new Schema({
         required: true,
         enum: ['scelta', 'indovinello', 'finale']
     },
-    requiredItemId: { type: String },
-    pickItemId:  { type: String }
+    requiredObject: { type: String },
+    foundObject: { type: String }
 });
 
 const Scene = mongoose.model('Scene', sceneSchema);

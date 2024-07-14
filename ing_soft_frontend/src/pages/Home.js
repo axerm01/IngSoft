@@ -22,6 +22,8 @@ const Home = () => {
       <div className="button-container">
         <Link to="/item" className="home-button">Oggetti</Link>
         <Link to="/createStory" className="home-button">Configurazione</Link>
+        <Link to="/createScene" className="home-button">Scene</Link>
+        <Link to="/createStory" className="home-button">Crea Storia</Link>
       </div>
     </div>
   );

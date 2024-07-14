@@ -102,7 +102,11 @@ const itemsRouter = require('./routes/items.route.js');
 const usersRouter = require('./routes/users.route.js');
 const scenesRouter = require('./routes/scenes.route.js'); // Percorso relativo corretto
 const storiesRouter = require('./routes/stories.route.js');
-
+const choiceRouter = require('./routes/choice.route.js');
+const riddleRouter = require('./routes/riddle.route.js');
+        
+app.use('/riddles', riddleRouter);
+app.use('/choices', choiceRouter);
 app.use('/items', itemsRouter);
 app.use('/users', usersRouter);
 app.use('/scenes', scenesRouter); // Aggiungi questa linea per le rotte delle scene

@@ -7,9 +7,8 @@ import StoriesPage from './pages/StoriesPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import { AuthProvider, useAuth } from './context/AuthContext';
-import CreateStoryPage from './pages/CreateStory'; // Importa la nuova pagina
 import Items from './pages/Item';
-
+import CreazioneStoria from './pages/CreateStory';
 
 const PrivateRoute = ({ children }) => {
   const { auth } = useAuth();
@@ -25,10 +24,10 @@ function App() {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/stories" element={<PrivateRoute><StoriesPage /></PrivateRoute>} />
           <Route path="/home" element={<PrivateRoute><Home /></PrivateRoute>} />
-          <Route path="/scene" element={<PrivateRoute><Scene /></PrivateRoute>} />
+          <Route path="/createScene/:storyTitle" element={<PrivateRoute><Scene /></PrivateRoute>} />
           <Route path="/" element={<Navigate to="/login" />} />
-          <Route path="/createStory" element={<CreateStoryPage />} /> {/* Aggiungi la nuova rotta */}
           <Route path="/item" element={<PrivateRoute><Items /></PrivateRoute>} />
+          <Route path="/createStory" element={<PrivateRoute><CreazioneStoria /></PrivateRoute>} />
           </Routes>
       </Router>
     </AuthProvider>

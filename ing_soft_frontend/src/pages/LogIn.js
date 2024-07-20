@@ -1,7 +1,7 @@
 // src/Login.js
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import './LogIn.css';
+import '../style/LogIn.css';
 
 const LogIn = () => {
   const [username, setUsername] = useState('');
@@ -62,7 +62,7 @@ const LogIn = () => {
 
   return (
     <div className="login-container">
-      <h1 className='titolo'>Benvenuto in AGAFabula</h1>
+      <h1 className='Login-title'>Benvenuto in AGAFabula</h1>
       <form onSubmit={handleSubmit} className="login-form">
         <h2>Accesso</h2>
         <div className="form-group">

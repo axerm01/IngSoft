@@ -1,0 +1,46 @@
+.riddle-scene-container {
+  padding: 20px;
+}
+
+.title, .author {
+  text-align: center;
+}
+
+.form-group {
+  margin: 10px 0;
+}
+
+select, textarea {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+}
+
+.save-riddle-button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.save-riddle-button:hover {
+  background-color: #45a049;
+}
+
+.riddle-list {
+  margin-top: 20px;
+}
+
+.riddle-item {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.riddle-item h4 {
+  margin: 0 0 10px;
+}

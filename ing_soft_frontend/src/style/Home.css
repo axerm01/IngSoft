@@ -1,6 +1,6 @@
+/* src/Home.css */
 body {
-  background: url('./images/mauroscimmia.jpg') no-repeat center center fixed; /* Correggi il percorso dell'immagine */
-  background-size: cover;
+  background: url('../../public/images/mauroscimmia1.jpg');
   margin: 0;
   font-family: Arial, sans-serif;
 }
@@ -12,7 +12,6 @@ body {
   justify-content: flex-start;
   height: 100vh;
   background: rgba(0, 0, 0, 0.6); /* Leggera sovrapposizione per rendere il testo leggibile */
-  color: white; /* Colore del testo */
 }
 
 .home-header {
@@ -27,13 +26,13 @@ body {
   top: 0;
 }
 
-.title {
+.titleHome {
   color: black; /* Colore del titolo */
   text-align: center;
+  padding-left: 90px ;
   margin: 0; /* Assicura che non ci siano margini che spostano il titolo */
   font-size: 24px; /* Dimensione del titolo */
   flex: 1;
-  margin-left: 90px;
 }
 
 .logout-button {
@@ -50,13 +49,18 @@ body {
   background-color: #c82333;
 }
 
+h1 {
+  color: white;
+  margin: 0;
+}
+
 .button-container {
   display: flex;
   align-items: center;
   justify-content: space-around;
   width: 100%;
   padding: 20px 0;
-  margin-top: 60px; /* Adjusted to avoid overlap with header */
+  margin-top: 30px;
 }
 
 .home-button {
@@ -70,7 +74,6 @@ body {
   cursor: pointer;
   font-size: 18px;
   text-align: center; /* Centra il testo nel pulsante */
-  text-decoration: none; /* Rimuove la sottolineatura dai link */
 }
 
 .home-button:hover {

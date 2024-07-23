@@ -11,6 +11,13 @@ import Items from './pages/Item';
 import CreateStory from './pages/CreateStory';
 import FirstScene from './pages/FirstScene';
 import RiddleScene from './pages/RiddleScene';
+import ChoiceScene from './pages/ChoiceScene';
+import EditScene from './pages/EditScene';
+import Game from './pages/Game';
+import VisitorGame from './pages/VisitorGame';
+import VisitorHome from './pages/VisitorHome';
+
+
 
 const PrivateRoute = ({ children }) => {
   const { auth } = useAuth();
@@ -32,6 +39,11 @@ function App() {
           <Route path="/createStory" element={<PrivateRoute><CreateStory /></PrivateRoute>} />
           <Route path="/firstScene" element={<FirstScene />} />
           <Route path="/riddle" element={<RiddleScene />} />
+          <Route path="/choice" element={<ChoiceScene />} />
+          <Route path="/editScene" element={<EditScene />} />
+          <Route path="/game" element={<Game />} />
+          <Route path="/visitorHome" element={<VisitorHome />} />
+          <Route path="/visitorGame" element={<VisitorGame />} />
         </Routes>
       </Router>
     </AuthProvider>

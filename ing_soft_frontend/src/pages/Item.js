@@ -27,16 +27,23 @@ const UserItems = () => {
             },
             body: JSON.stringify({ username, name: newItemName }),
         })
-            .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(err => {
+                    throw new Error(err);
+                });
+            }
+            return response.json();
+        })
             .then(data => {
                 console.log('Success:', data);
-                alert('Item added successfully!');
+                alert('Oggetto aggiunto');
                 setItems([...items, { username, name: newItemName }]);
                 setNewItemName('');
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('Error adding item');
+                alert('Oggetto già esistente');
             });
     };
 

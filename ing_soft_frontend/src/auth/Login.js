@@ -13,6 +13,10 @@ const Login = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
 
+  const handleGuestLogin = () => {
+    navigate('/visitorHome');
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -49,6 +53,7 @@ const Login = () => {
             required
           />
         </div>
+        <button onClick={handleGuestLogin} className="login-button">Entra come ospite</button>
         <button type="submit" className="login-button">Login</button>
         {error && <p className="error-message">{error}</p>}
         <Link to="/register" className="signin-link">

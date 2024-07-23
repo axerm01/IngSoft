@@ -1,143 +1,152 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
 import '../style/RiddleScene.css';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const RiddleScene = () => {
+  const navigate = useNavigate();
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const storyTitle = params.get('storyTitle');
   const username = params.get('username');
 
-  const [scenes, setScenes] = useState([]);
-  const [riddles, setRiddles] = useState([]);
+  const [allScenes, setAllScenes] = useState([]);
+  const [riddleScenes, setRiddleScenes] = useState([]);
+  const [riddles, setRiddles] = useState({});
 
   useEffect(() => {
-    const fetchScenes = async () => {
+    const fetchAllScenes = async () => {
       try {
         const response = await fetch(`http://localhost:5001/scenes/story/${encodeURIComponent(storyTitle)}/author/${encodeURIComponent(username)}`);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
         const data = await response.json();
-        setScenes(data.filter(scene => scene.type === 'indovinello'));
-        console.log('Scenes fetched:', data);
+        setAllScenes(data);
+        console.log('All scenes fetched:', data);
       } catch (error) {
-        console.error('Error fetching scenes:', error);
+        console.error('Error fetching all scenes:', error);
       }
     };
 
-    const fetchRiddles = async () => {
+    const fetchRiddleScenes = async () => {
       try {
-        const response = await fetch('http://localhost:5001/riddles');
+        const response = await fetch(`http://localhost:5001/scenes/story/${encodeURIComponent(storyTitle)}/author/${encodeURIComponent(username)}/indovinello`);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
         const data = await response.json();
-        setRiddles(data.filter(riddle => riddle.storyTitle === storyTitle && riddle.authorName === username));
-        console.log('Riddles fetched:', data);
+        setRiddleScenes(data);
+        console.log('Riddle scenes fetched:', data);
       } catch (error) {
-        console.error('Error fetching riddles:', error);
+        console.error('Error fetching riddle scenes:', error);
       }
     };
 
-    fetchScenes();
-    fetchRiddles();
+    fetchAllScenes();
+    fetchRiddleScenes();
   }, [storyTitle, username]);
 
-  const handleChange = (index, e) => {
+  const handleChange = (sceneId, e) => {
     const { name, value } = e.target;
-    setRiddles(prevRiddles => {
-      const newRiddles = [...prevRiddles];
-      newRiddles[index] = {
-        ...newRiddles[index],
+    setRiddles(prevRiddles => ({
+      ...prevRiddles,
+      [sceneId]: {
+        ...prevRiddles[sceneId],
         [name]: value
-      };
-      return newRiddles;
-    });
+      }
+    }));
   };
 
-  const handleSaveRiddle = async (riddle) => {
+  const handleSaveRiddles = async () => {
     try {
-      const response = await fetch('http://localhost:5001/riddles/add', {
+      const response = await fetch('http://localhost:5001/riddles/add-scenes', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(riddle),
+        body: JSON.stringify({
+          scenes: riddleScenes.map(scene => ({
+            authorName: username,
+            storyTitle: storyTitle,
+            sceneTitle: scene.title,
+            riddle_text: riddles[scene._id]?.riddle_text || '',
+            answer: riddles[scene._id]?.answer || '',
+            correct_scene: riddles[scene._id]?.correct_scene || '',
+            incorrect_scene: riddles[scene._id]?.incorrect_scene || ''
+          }))
+        })
       });
-
+  
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-
-      const result = await response.json();
-      console.log('Riddle added:', result);
-    } catch (error) {
-      console.error('Error adding riddle:', error);
+  
+      const data = await response.json();
+      console.log('Riddles saved:', data);
+      navigate(`/choice?username=${encodeURIComponent(username)}&storyTitle=${encodeURIComponent(storyTitle)}`)    } catch (error) {
+      console.error('Error saving riddles:', error);
     }
-  };
+  };  
 
   return (
     <div className="riddle-scene-container">
-      <h1 className="title">Indovinelli per la Storia: {storyTitle}</h1>
-      <h2 className="author">Autore: {username}</h2>
+      <h1 className="riddle-scene-title">Indovinelli per la Storia: {storyTitle}</h1>
 
-      <div className="riddle-list">
-        {scenes.map((scene, index) => (
-          <div key={index} className="riddle-item">
-            <h4>{scene.title}</h4>
-            <div className="form-group">
-              <label htmlFor={`riddle_text_${index}`}>Testo dell'Indovinello:</label>
+      {riddleScenes.map((scene) => (
+        <div key={scene._id} className="riddle-scene-item">
+          <div className="riddle-scene-header">{scene.title}</div>
+          <div className="riddle-scene-content">
+            <div className="riddle-scene-form-group">
+              <label htmlFor={`riddle_text_${scene._id}`}>Testo dell'Indovinello:</label>
               <textarea
                 name="riddle_text"
-                id={`riddle_text_${index}`}
-                value={riddles[index]?.riddle_text || ''}
-                onChange={(e) => handleChange(index, e)}
+                id={`riddle_text_${scene._id}`}
+                value={riddles[scene._id]?.riddle_text || ''}
+                onChange={(e) => handleChange(scene._id, e)}
               />
             </div>
-            <div className="form-group">
-              <label htmlFor={`answer_${index}`}>Risposta:</label>
+            <div className="riddle-scene-form-group">
+              <label htmlFor={`answer_${scene._id}`}>Risposta:</label>
               <textarea
                 name="answer"
-                id={`answer_${index}`}
-                value={riddles[index]?.answer || ''}
-                onChange={(e) => handleChange(index, e)}
+                id={`answer_${scene._id}`}
+                value={riddles[scene._id]?.answer || ''}
+                onChange={(e) => handleChange(scene._id, e)}
               />
             </div>
-            <div className="form-group">
-              <label htmlFor={`correct_scene_${index}`}>Scena Corretta:</label>
+            <div className="riddle-scene-form-group">
+              <label htmlFor={`correct_scene_${scene._id}`}>Scena Corretta:</label>
               <select
                 name="correct_scene"
-                id={`correct_scene_${index}`}
-                value={riddles[index]?.correct_scene || ''}
-                onChange={(e) => handleChange(index, e)}
+                id={`correct_scene_${scene._id}`}
+                value={riddles[scene._id]?.correct_scene || ''}
+                onChange={(e) => handleChange(scene._id, e)}
               >
                 <option value="">Seleziona una scena</option>
-                {scenes.map(scene => (
-                  <option key={scene.title} value={scene.title}>{scene.title}</option>
+                {allScenes.map(sceneOption => (
+                  <option key={sceneOption._id} value={sceneOption.title}>{sceneOption.title}</option>
                 ))}
               </select>
             </div>
-            <div className="form-group">
-              <label htmlFor={`incorrect_scene_${index}`}>Scena Sbagliata:</label>
+            <div className="riddle-scene-form-group">
+              <label htmlFor={`incorrect_scene_${scene._id}`}>Scena Sbagliata:</label>
               <select
                 name="incorrect_scene"
-                id={`incorrect_scene_${index}`}
-                value={riddles[index]?.incorrect_scene || ''}
-                onChange={(e) => handleChange(index, e)}
+                id={`incorrect_scene_${scene._id}`}
+                value={riddles[scene._id]?.incorrect_scene || ''}
+                onChange={(e) => handleChange(scene._id, e)}
               >
                 <option value="">Seleziona una scena</option>
-                {scenes.map(scene => (
-                  <option key={scene.title} value={scene.title}>{scene.title}</option>
+                {allScenes.map(sceneOption => (
+                  <option key={sceneOption._id} value={sceneOption.title}>{sceneOption.title}</option>
                 ))}
               </select>
             </div>
-            <button className="save-riddle-button" onClick={() => handleSaveRiddle(riddles[index])}>
-              Salva Indovinello
-            </button>
           </div>
-        ))}
-      </div>
+        </div>
+      ))}
+
+      <button className="prosegui-button" onClick={handleSaveRiddles}>Prosegui</button>
     </div>
   );
 };

@@ -116,6 +116,25 @@ const Scene = () => {
       alert('Errore nella creazione della scena');
     }
   };
+  const handleProceed = async () => {
+    try {
+      const response = await fetch(`http://localhost:5001/scenes/check/story/${encodeURIComponent(storyTitle)}/author/${encodeURIComponent(username)}/finale`);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      
+      if (data.exists) {
+        navigate(`/firstScene?username=${encodeURIComponent(username)}&storyTitle=${encodeURIComponent(storyTitle)}`);
+      } else {
+        alert('Devi creare almeno una scena finale per procedere.');
+      }
+    } catch (error) {
+      console.error('Error checking final scene existence:', error);
+      alert('Errore durante il controllo della disponibilità della scena finale');
+    }
+  };
+  
 
   return (
     <div className="scene-container">
@@ -182,8 +201,8 @@ const Scene = () => {
         </div>
         <button type="submit" className="create-button">Salva Scena</button>
       </form>
-      {/* Utilizza onClick per navigare a FirstScene */}
-      <button className="proceed-button" onClick={() => navigate(`/firstScene?username=${encodeURIComponent(username)}&storyTitle=${encodeURIComponent(storyTitle)}`)}>Prosegui</button>
+      {}
+      <button className="proceed-button" onClick={handleProceed}>Prosegui</button>
     </div>
   );
 };

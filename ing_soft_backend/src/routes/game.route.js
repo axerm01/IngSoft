@@ -144,11 +144,23 @@ router.route('/removeItem').put(async (req, res) => {
         res.status(400).json('Error: ' + error);
     }
 });            
-                    //riddle
-//richiamare l'indovinello (chiamata a riddle.route.js)
-//richiamare la risposta corretta (chiamata a riddle.route.js)
-//richiamare la scena giusta e quella sbagliata (chiamata a riddle.route.js)
 
-                //choice
-//richiamare le possibili scene
+//dati in input Utente, nome storia, giocatore cerca in games e cancella l'elemento
+router.route('/removeGame').delete(async (req, res) => {
+    const { storyTitle, author, playerName} = req.body;
+
+    try {
+        const game = await Game.findOneAndDelete(
+            { storyTitle, author, playerName}
+        );
+
+        if (!game) {
+            return res.status(404).json('Salvataggio non trovato');
+        }
+
+        res.json('Gioco rimosso con successo!');
+    } catch (error) {
+        res.status(400).json('Error: ' + error);
+    }
+});            
 module.exports = router;

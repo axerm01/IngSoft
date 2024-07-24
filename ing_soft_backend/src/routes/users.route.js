@@ -13,10 +13,7 @@ router.route('/add').post(async (req, res) => {
         if (existingUser) {
             return res.status(400).json('User already exists');
         }
-
-        // Crea un nuovo utente
-        const userId = crypto.createHash('sha256').update(username).digest('hex');
-        const newUser = new User({ _id: userId, username, password });
+        const newUser = new User({username, password });
         await newUser.save();
         res.json('User added!');
     } catch (error) {
@@ -34,41 +31,32 @@ router.route('/').get(async (req, res) => {
     }
 });
 
-// Ottieni un utente dato il suo id
-router.route('/:id').get(async (req, res) => {
-    const { userId } = req.params;
+router.post('/login', async (req, res) => {
+    const { username, password } = req.body;
 
     try {
-        const user = await User.findOne({ userId });
+        // Trova l'utente con il nome utente fornito
+        const user = await User.findOne({ username });
         if (!user) {
-            return res.status(404).json('User not found');
+            return res.status(401).json({ message: 'Invalid username' });
         }
-        res.json(user);
+
+        // Confronta la password fornita con quella memorizzata
+        if (user.password !== password) {
+            return res.status(401).json({ message: 'Invalid password' });
+        }
+
+        // Login riuscito
+        res.status(200).json({ message: 'Login successful' });
     } catch (error) {
-        res.status(400).json('Error: ' + error);
+        res.status(500).json({ message: 'Server error' });
     }
 });
-
 // Elimina tutti gli utenti
 router.route('/delete/all').delete(async (req, res) => {
     try {
         await User.deleteMany();
         res.json('All users deleted');
-    } catch (error) {
-        res.status(400).json('Error: ' + error);
-    }
-});
-
-// Elimina un utente dato il suo id
-router.route('/delete/:id').delete(async (req, res) => {
-    const { userId } = req.params;
-
-    try {
-        const deletedUser = await User.findOneAndDelete({ userId });
-        if (!deletedUser) {
-            return res.status(404).json('User not found');
-        }
-        res.json('User deleted');
     } catch (error) {
         res.status(400).json('Error: ' + error);
     }

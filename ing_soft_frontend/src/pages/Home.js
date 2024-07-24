@@ -78,6 +78,34 @@ const Home = () => {
     }
   };
 
+  const deleteGame = (story) => {
+    console.log({storyTitle:story.title, author: story.authorId, playerName:username})
+    fetch('http://localhost:5001/games/removeGame', {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({storyTitle:story.title, author: story.authorId, playerName:username}),
+    })
+    .then(response => {
+        if (!response.ok) {
+            return response.json().then(err => {
+                throw new Error(err);
+            });
+        }
+        return response.json();
+    })
+        .then(data => {
+            console.log('Success:', data);
+            alert('Salvataggio rimosso');
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Salvataggio non trovato');
+        });
+};
+
+
   return (
     <div className="home-container">
       <header className="home-header">
@@ -95,6 +123,7 @@ const Home = () => {
             <h2>{story.title}</h2>
             <p>Autore: {story.authorId}</p>
             <button className="play-button" onClick={() => startGame(story.title, story.authorId, username)}>Gioca</button>
+            <button className="remove-button" onClick={() => deleteGame(story)}>Rimuovi salvataggio</button>
           </div>
         ))}
       </div>

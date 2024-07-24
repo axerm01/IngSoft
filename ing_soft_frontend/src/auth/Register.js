@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
 import '../style/Register.css';
 
@@ -12,10 +11,22 @@ const Register = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post(`${process.env.REACT_APP_API_URL}/register`, { username, password });
+            const response = await fetch(`http://localhost:5001/users/add`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username, password }),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Error registering user');
+            }
+
             setMessage('User registered successfully');
         } catch (error) {
-            setError('Error registering user');
+            setError(error.message || 'Error registering user');
         }
     };
 
@@ -45,10 +56,9 @@ const Register = () => {
                 {error && <p className="error-message">{error}</p>}
                 {message && <p className="success-message">{message}</p>}
                 <Link to="/login" className="login-link">
-                <button className="go-to-login-button">Vai al Login</button>
-            </Link>
+                    <button type="button" className="go-to-login-button">Vai al Login</button>
+                </Link>
             </form>
-           
         </div>
     );
 };

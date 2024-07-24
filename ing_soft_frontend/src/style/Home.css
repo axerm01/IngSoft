@@ -102,13 +102,20 @@ h1 {
   margin-top: 0;
 }
 
-.play-button {
+.play-button , .remove-button{
   background-color: #28a745;
   color: #fff;
   border: none;
   padding: 10px 20px;
   cursor: pointer;
   border-radius: 5px;
+}
+.remove-button{
+  background-color: red;
+}
+
+.remove-button:hover {
+  background-color: rgb(162, 1, 1);
 }
 
 .play-button:hover {

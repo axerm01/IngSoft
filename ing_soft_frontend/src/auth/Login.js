@@ -1,9 +1,7 @@
 // src/auth/Login.js
 import React, { useState } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Link } from 'react-router-dom';
 import '../style/LogIn.css';
 
 const Login = () => {
@@ -20,13 +18,30 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}/login`, { username, password }, { withCredentials: true });
-      const { token } = response.data;
-      login(token);
-      // Reindirizza alla pagina Home con l'username come parametro
-      navigate(`/home?username=${encodeURIComponent(username)}`);
+      const response = await fetch(`http://localhost:5001/users/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({ username, password })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        if (data.message === 'Login successful') {
+          login();
+          navigate(`/home?username=${encodeURIComponent(username)}`);
+        } else {
+          setError(data.message);
+        }
+      } else {
+        setError(data.message || 'An error occurred');
+      }
     } catch (error) {
-      setError('Invalid credentials');
+      setError('An error occurred');
     }
   };
 
@@ -53,7 +68,7 @@ const Login = () => {
             required
           />
         </div>
-        <button onClick={handleGuestLogin} className="login-button">Entra come ospite</button>
+        <button type="button" onClick={handleGuestLogin} className="login-button">Entra come ospite</button>
         <button type="submit" className="login-button">Login</button>
         {error && <p className="error-message">{error}</p>}
         <Link to="/register" className="signin-link">
